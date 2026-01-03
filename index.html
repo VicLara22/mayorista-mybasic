@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mayorista MyBasic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+
+  <!-- HEADER -->
+  <header class="bg-red-100 p-6 text-center">
+    <h1 class="text-4xl font-bold">Mayorista MyBasic</h1>
+    <p class="mt-2 text-lg text-gray-700">Venta mayorista de ropa básica</p>
+  </header>
+
+  <!-- CATÁLOGO -->
+  <section id="catalogo" class="p-6">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Catálogo</h2>
+
+    <!-- CARDS DE PRODUCTOS -->
+    <div id="productos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- JS generará aquí las cards -->
+    </div>
+
+    <!-- RESUMEN DE PEDIDO -->
+    <div id="resumen-pedido" class="mt-6 p-4 border rounded shadow w-full">
+      <h3 class="font-bold text-lg mb-2 text-center">Tu pedido:</h3>
+
+
+      <div class="mb-4 p-2 bg-yellow-100 border-l-4 border-yellow-400 rounded">
+        <p class="font-semibold">Método de trabajo:</p>
+        <ul class="list-disc list-inside text-gray-700 text-sm">
+          <li>Tomamos pedidos hasta el <strong>lunes</strong>.</li>
+          <li>A partir del <strong>martes por la tarde</strong>, los pedidos se pueden retirar por
+            <strong>domicilio</strong>.
+          </li>
+          <li>A partir del <strong>miércoles</strong>, se realizan los envíos por <strong>correo</strong> y
+            <strong>motomensajería</strong>.
+          </li>
+          <li>Los <strong>jueves y sábados</strong> se hacen las entregas en <strong>Longchamps</strong>.</li>
+        </ul>
+      </div>
+      <ul id="lista-pedido" class="mb-2"></ul>
+
+      <div class="flex flex-col gap-2 mb-2">
+        <input type="text" id="nombre-cliente" placeholder="Nombre" class="border p-2 w-full">
+        <input type="text" id="telefono-cliente" placeholder="Teléfono" class="border p-2 w-full">
+        <input type="email" id="email-cliente" placeholder="Email" class="border p-2 w-full">
+      </div>
+
+      <div class="mb-2">
+        <p class="font-semibold mb-1">Método de envío:</p>
+        <div class="flex flex-col gap-1">
+          <label><input type="radio" name="envio" value="Correo"> Correo</label>
+          <label><input type="radio" name="envio" value="Motomensajería"> Motomensajería</label>
+          <label><input type="radio" name="envio" value="Punto de encuentro (Longchamps)"> Punto de encuentro
+            (Longchamps)</label>
+          <label><input type="radio" name="envio" value="Retiro por domicilio"> Retiro por domicilio</label>
+        </div>
+      </div>
+
+      <div class="flex justify-between">
+        <button id="enviar-pedido" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Enviar pedido por
+          WhatsApp</button>
+        <button id="cancelar-pedido" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Cancelar
+          todo</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section id="faq" class="p-6 bg-gray-100 mt-6 rounded">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Preguntas Frecuentes</h2>
+
+    <div class="space-y-4 max-w-3xl mx-auto">
+      <div class="border rounded p-4">
+        <button class="w-full text-left flex justify-between items-center faq-toggle font-semibold">
+          ¿Cuál es la cantidad mínima para comprar al por mayor?
+          <span class="transform transition-transform">+</span>
+        </button>
+        <p class="faq-answer mt-2 hidden text-gray-700">
+          La cantidad mínima es de 12 unidades pueden ser talles y colores surtidos o iguales.
+        </p>
+      </div>
+
+      <div class="border rounded p-4">
+        <button class="w-full text-left flex justify-between items-center faq-toggle font-semibold">
+          ¿Hacen envíos a todo el país?
+          <span class="transform transition-transform">+</span>
+        </button>
+        <p class="faq-answer mt-2 hidden text-gray-700">
+          Sí, realizamos envíos a toda Argentina a través de correo, se cobra un plus por el flete que lleva el paquete
+          a la agencia de correo. CABA y GBA por motomensajería. Todo a cargo del cliente.
+        </p>
+      </div>
+
+      <div class="border rounded p-4">
+        <button class="w-full text-left flex justify-between items-center faq-toggle font-semibold">
+          ¿Cómo puedo pagar?
+          <span class="transform transition-transform">+</span>
+        </button>
+        <p class="faq-answer mt-2 hidden text-gray-700">
+          Aceptamos transferencias por Mercado Pago y efectivo solo al retirar en puntos de encuentro.
+        </p>
+      </div>
+
+      <div class="border rounded p-4">
+        <button class="w-full text-left flex justify-between items-center faq-toggle font-semibold">
+          ¿Puedo devolver o cambiar un producto?
+          <span class="transform transition-transform">+</span>
+        </button>
+        <p class="faq-answer mt-2 hidden text-gray-700">
+          Solo aceptamos cambios por falla de fabrica, dentro de los 7 días posteriores a la entrega.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Script para abrir/cerrar FAQ
+    document.querySelectorAll('.faq-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const answer = btn.nextElementSibling;
+        answer.classList.toggle('hidden');
+        // Cambiar signo + a -
+        const icon = btn.querySelector('span');
+        if (answer.classList.contains('hidden')) {
+          icon.textContent = '+';
+        } else {
+          icon.textContent = '-';
+        }
+      });
+    });
+  </script>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-100 p-6 text-center mt-6">
+    <!-- <p>Síguenos en nuestras redes:</p>
+    <div class="flex justify-center gap-4 mt-2">
+      <a href="#" class="text-blue-600">Instagram</a>
+      <a href="#" class="text-blue-700">Facebook</a>
+    </div> -->
+    <p class="mt-2 text-gray-600">Contacto: +54 11 69962751</p>
+  </footer>
+
+  <!-- SCRIPT JS -->
+  <script>
+    const productosData = [
+      {
+        nombre: "Remera de algodón cardado", colores: ["Rojo", "Azul Marino", "Verde Militar", "Negro", "Blanco", "Amarillo", "Naranja", "Gris Topo", "Gris Melange", "Celeste", "Rosa", "Violeta", "Lila", "Bordo", "Turquesa", "Fucsia", "Crudo", "Mostaza", "Verde Manzana", "Camel", "Marrón", "Verde Brasil", "Azul Francia", "Verde Ingles"], talles: ["S", "M", "L", "XL"], precio: 3900, descripcion: "Básica de algodón cardado 24.1, se recomienda para usos en movimientos, camapañas, eventos. Con los lavados van tomando.", lavado: "Lavar a mano con agua fria/tibia, secar a la sombra", uso: "Básico", img: "imagenes/remerasCardado/photo_4999302195962818844_y.jpg"
+      },
+      {
+        nombre: "Remera de algodón cardado - especial", colores: ["Rojo", "Azul Marino", "Verde Militar", "Negro", "Blanco", "Amarillo", "Naranja", "Gris Topo", "Gris Melange", "Celeste", "Rosa", "Violeta", "Lila", "Bordo", "Turquesa", "Fucsia", "Crudo", "Mostaza", "Verde Manzana", "Camel", "Marrón", "Verde Brasil", "Azul Francia", "Verde Ingles"], talles: ["2XL"], precio: 4200, descripcion: "Básica de algodón cardado 24.1, se recomienda para usos en movimientos, camapañas, eventos. Con los lavados van tomando.", lavado: "Lavar a mano con agua fria/tibia, secar a la sombra", uso: "Básico", img: "imagenes/remerasCardado/photo_4999302195962818845_y.jpg"
+      },
+      {
+        nombre: "Remera de algodón cardado - especial", colores: ["Rojo", "Azul Marino", "Verde Militar", "Negro", "Blanco", "Amarillo", "Naranja", "Gris Topo", "Gris Melange", "Celeste", "Rosa", "Violeta", "Lila", "Bordo", "Turquesa", "Fucsia", "Crudo", "Mostaza", "Verde Manzana", "Camel", "Marrón", "Verde Brasil", "Azul Francia", "Verde Ingles"], talles: ["3XL"], precio: 4400, descripcion: "Básica de algodón cardado 24.1, se recomienda para usos en movimientos, camapañas, eventos. Con los lavados van tomando.", lavado: "Lavar a mano con agua fria/tibia, secar a la sombra", uso: "Básico", img: "imagenes/remerasCardado/photo_4999302195962818846_y.jpg"
+      },
+      {
+        nombre: "Remera de algodón cardado - especial", colores: ["Rojo", "Azul Marino", "Verde Militar", "Negro", "Blanco", "Amarillo", "Naranja", "Gris Topo", "Gris Melange", "Celeste", "Rosa", "Violeta", "Lila", "Bordo", "Turquesa", "Fucsia", "Crudo", "Mostaza", "Verde Manzana", "Camel", "Marrón", "Verde Brasil", "Azul Francia", "Verde Ingles"], talles: ["4XL"], precio: 4600, descripcion: "Básica de algodón cardado 24.1, se recomienda para usos en movimientos, camapañas, eventos. Con los lavados van tomando.", lavado: "Lavar a mano con agua fria/tibia, secar a la sombra", uso: "Básico", img: "imagenes/remerasCardado/photo_4999302195962818847_y.jpg"
+      },
+      {
+        nombre: "Remera de algodón cardado - especial", colores: ["Rojo", "Azul Marino", "Verde Militar", "Negro", "Blanco", "Amarillo", "Naranja", "Gris Topo", "Gris Melange", "Celeste", "Rosa", "Violeta", "Lila", "Bordo", "Turquesa", "Fucsia", "Crudo", "Mostaza", "Verde Manzana", "Camel", "Marrón", "Verde Brasil", "Azul Francia", "Verde Ingles"], talles: ["5XL"], precio: 4800, descripcion: "Básica de algodón cardado 24.1, se recomienda para usos en movimientos, camapañas, eventos. Con los lavados van tomando.", lavado: "Lavar a mano con agua fria/tibia, secar a la sombra", uso: "Básico", img: "imagenes/remerasCardado/photo_4999302195962818848_y.jpg"
+      },
+      { nombre: "Remera de algodón peinado", colores: ["Blanco", "Negro", "Rojo", "Gris Melange", "Verde Militar", "Violeta", "Bordo"], talles: ["S", "M", "L", "XL"], precio: 4900, descripcion: "Algodón peinado 24.1 sin tapa costura", lavado: "Lavar a mano con agua fria/tibia", uso: "Uso diario", img: "imagenes/remeraPeinado/photo_5102659883865148336_y.jpg" },
+      { nombre: "Remera de algodón peinado - especial", colores: ["Blanco", "Negro", "Rojo", "Gris Melange", "Verde Militar", "Violeta", "Bordo"], talles: ["2XL"], precio: 5100, descripcion: "Algodón peinado 24.1 sin tapa costura", lavado: "Lavar a mano con agua fria/tibia", uso: "Uso diario", img: "imagenes/remeraPeinado/photo_5102659883865148338_y.jpg" },
+      { nombre: "Remera de algodón peinado - especial", colores: ["Blanco", "Negro", "Rojo", "Gris Melange", "Verde Militar", "Violeta", "Bordo"], talles: ["3XL"], precio: 5300, descripcion: "Algodón peinado 24.1 sin tapa costura", lavado: "Lavar a mano con agua fria/tibia", uso: "Uso diario", img: "imagenes/remeraPeinado/photo_5102659883865148339_y.jpg" },
+
+      /*       { nombre: "Remera premium", colores: ["Blanco", "Negro"], talles: ["S", "M", "L"], precio: 9000, descripcion: "Algodón premium", lavado: "Lavar a mano", uso: "Uso formal", img: "producto3.jpg" },
+            { nombre: "Remera oversize", colores: ["Blanco", "Negro"], talles: ["M", "L", "XL"], precio: 8000, descripcion: "Oversize cómodo", lavado: "Lavar a mano", uso: "Uso casual", img: "producto4.jpg" }, */
+
+      { nombre: "Remera modal", colores: ["Blanco", "Negro", "Gris"], talles: ["S", "M", "L", "XL"], precio: 4500, descripcion: "Modal", lavado: "Lavar a mano", uso: "Uso diario", img: "imagenes/remerasModal/photo_5102659883865148320_y.jpg" },
+      { nombre: "Remera modal - especial", colores: ["Blanco", "Negro", "Gris"], talles: ["2XL"], precio: 4600, descripcion: "Modal", lavado: "Lavar a mano", uso: "Uso diario", img: "imagenes/remerasModal/photo_5102659883865148321_y.jpg" },
+      { nombre: "Remera modal - especial", colores: ["Blanco", "Negro", "Gris"], talles: ["3XL"], precio: 4700, descripcion: "Modal", lavado: "Lavar a mano", uso: "Uso diario", img: "imagenes/remerasModal/photo_5102659883865148320_y.jpg" },
+
+      { nombre: "Remera deportiva", colores: ["Blanco", "Negro", "Azul", "Rojo", "Verde", "Gris", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["S", "M", "L", "XL"], precio: 4500, descripcion: "Deporte y entrenamiento", lavado: "Lavar a máquina", uso: "Deporte", img: "imagenes/remerasDeportivas/photo_4999302195962818850_y.jpg" },
+      { nombre: "Remera deportiva - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Verde", "Gris", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["2XL"], precio: 4600, descripcion: "Deporte y entrenamiento - especial ", lavado: "Lavar a máquina ", uso: "", img: "imagenes/remerasDeportivas/photo_4999302195962818851_y.jpg" },
+
+      { nombre: "Musculosa deportiva", colores: ["Blanco", "Negro", "Azul", "Rojo", "Verde", "Gris", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["S", "M", "L", "XL"], precio: 4350, descripcion: "Musculosa básica", lavado: "Lavar a mano", uso: "Uso diario", img: "imagenes/msuculosas/photo_5102659883865148329_y.jpg" },
+      { nombre: "Musculosa deportiva - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Verde", "Gris", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["2XL"], precio: 4450, descripcion: "Musculosa básica", lavado: "Lavar a mano", uso: "Uso diario", img: "imagenes/msuculosas/photo_5102659883865148330_y.jpg" },
+      { nombre: "Musculosa deportiva - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Verde", "Gris", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["3XL"], precio: 4550, descripcion: "Musculosa básica", lavado: "Lavar a mano", uso: "Uso diario", img: "imagenes/msuculosas/photo_5102659883865148331_y.jpg" },
+
+      { nombre: "Sudadera deportiva", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris", "Verde", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["S", "M", "L", "XL"], precio: 4350, descripcion: "Sudadera cómoda", lavado: "Lavar a máquina", uso: "Uso casual", img: "imagenes/sudaderas/photo_5102659883865148327_y.jpg" },
+      { nombre: "Sudadera deportiva - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris", "Verde", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["2XL"], precio: 4450, descripcion: "Sudadera cómoda", lavado: "Lavar a máquina", uso: "Uso casual", img: "imagenes/sudaderas/photo_5102659883865148327_y.jpg" },
+      { nombre: "Sudadera deportiva - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris", "Verde", "Naranja", "Amarillo", "Celeste", "Fucsia"], talles: ["3XL"], precio: 4550, descripcion: "Sudadera cómoda", lavado: "Lavar a máquina", uso: "Uso casual", img: "imagenes/sudaderas/photo_5102659883865148327_y.jpg" },
+
+      { nombre: "Short liso deportivo S/B", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris"], talles: ["S", "M", "L", "XL"], precio: 4350, descripcion: "Short básico sin bolsillo", lavado: "Lavar a máquina", uso: "Deporte / casual", img: "imagenes/shortSinBolsillo/photo_5102659883865148322_y.jpg" },
+      { nombre: "Short liso deportivo S/B - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris"], talles: ["2XL"], precio: 4450, descripcion: "Short básico sin bolsillo", lavado: "Lavar a máquina", uso: "Deporte / casual", img: "imagenes/shortSinBolsillo/photo_5102659883865148322_y.jpg" },
+      { nombre: "Short liso deportivo S/B - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris"], talles: ["3XL"], precio: 4550, descripcion: "Short básico sin bolsillo", lavado: "Lavar a máquina", uso: "Deporte / casual", img: "imagenes/shortSinBolsillo/photo_5102659883865148322_y.jpg" },
+
+      { nombre: "Short liso deportivo C/B", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris"], talles: ["S", "M", "L", "XL"], precio: 4900, descripcion: "Short básico con bolsillo", lavado: "Lavar a máquina", uso: "Deporte / casual", img: "imagenes/shortConbolsillo/photo_5102659883865148323_y.jpg" },
+      { nombre: "Short liso deportivo C/B - especial", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris"], talles: ["2XL"], precio: 5000, descripcion: "Short básico con bolsillo", lavado: "Lavar a máquina", uso: "Deporte / casual", img: "imagenes/shortConbolsillo/photo_5102659883865148324_y.jpg" },
+      { nombre: "Short liso deportivo C/B - especial ", colores: ["Blanco", "Negro", "Azul", "Rojo", "Gris"], talles: ["3XL"], precio: 5100, descripcion: "Short básico con bolsillo", lavado: "Lavar a máquina ", uso: "Deporte / casual ", img: "imagenes/shortConbolsillo/photo_5102659883865148323_y.jpg" }
+    ];
+
+    const productosDiv = document.getElementById('productos');
+    const pedido = [];
+
+    function generarCards(array) {
+      productosDiv.innerHTML = "";
+      array.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = "border p-4 rounded shadow";
+        card.innerHTML = `
+      <img src="${prod.img}" alt="${prod.nombre}" class="mb-4 w-full max-h-40 object-contain rounded">
+      <h3 class="font-bold text-lg">${prod.nombre}</h3>
+      <p class="text-gray-600">${prod.descripcion}</p>
+      <p class="font-semibold mt-2">Precio mayorista: $${prod.precio}</p>
+      <p><strong>Uso:</strong> ${prod.uso}</p>
+      <p><strong>Lavado:</strong> ${prod.lavado}</p>
+      <div class="mt-2">
+        <input type="number" min="1" placeholder="Cantidad" class="border p-1 w-20 mr-2 cantidad-input">
+        <select class="border p-1 mr-2 talle-select">
+          <option value="">Talle</option>
+          ${prod.talles.map(t => `<option value="${t}">${t}</option>`).join('')}
+        </select>
+        <select class="border p-1 color-select">
+          <option value="">Color</option>
+          ${prod.colores.map(c => `<option value="${c}">${c}</option>`).join('')}
+        </select>
+      </div>
+      <button class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 agregar-pedido" disabled>Agregar al pedido</button>
+    `;
+        productosDiv.appendChild(card);
+
+        // Obtener elementos de la card
+        const cantidadInput = card.querySelector('.cantidad-input');
+        const talleSelect = card.querySelector('.talle-select');
+        const colorSelect = card.querySelector('.color-select');
+        const agregarBtn = card.querySelector('.agregar-pedido');
+
+        // Función para validar
+        function validar() {
+          if (cantidadInput.value && talleSelect.value && colorSelect.value) {
+            agregarBtn.disabled = false;
+            agregarBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          } else {
+            agregarBtn.disabled = true;
+            agregarBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          }
+        }
+
+        // Escuchar cambios
+        cantidadInput.addEventListener('input', validar);
+        talleSelect.addEventListener('change', validar);
+        colorSelect.addEventListener('change', validar);
+
+        // Inicialmente deshabilitado
+        agregarBtn.disabled = true;
+        agregarBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      });
+    }
+
+    function actualizarResumen() {
+      const lista = document.getElementById('lista-pedido');
+      lista.innerHTML = "";
+      pedido.forEach((item, i) => {
+        lista.innerHTML += `
+      <li class="flex justify-between items-center border-b py-1">
+        <span>${item.nombre} - Cantidad: ${item.cantidad}, Talle: ${item.talle}, Color: ${item.color}</span>
+        <button data-index="${i}" class="text-red-600 font-bold hover:text-red-800 eliminar-item">×</button>
+      </li>
+    `;
+      });
+    }
+
+
+    // Eliminar un item específico
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('eliminar-item')) {
+        const index = e.target.dataset.index;
+        pedido.splice(index, 1);
+        actualizarResumen();
+      }
+    });
+
+    // Cancelar todo el pedido
+    document.getElementById('cancelar-pedido').addEventListener('click', () => {
+      pedido.length = 0; // Vacía el array
+      actualizarResumen();
+    });
+
+
+    generarCards(productosData);
+
+    // Pedido múltiple
+    function actualizarResumen() {
+      const lista = document.getElementById('lista-pedido');
+      lista.innerHTML = "";
+      pedido.forEach((item, i) => {
+        lista.innerHTML += `<li>${item.nombre} - Cantidad: ${item.cantidad}, Talle: ${item.talle}, Color: ${item.color}</li>`;
+      });
+    }
+
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('agregar-pedido')) {
+        const card = e.target.parentElement;
+        const nombre = card.querySelector('h3').innerText;
+        const cantidad = card.querySelector('input[type="number"]').value || 1;
+        const talle = card.querySelector('select:nth-of-type(1)').value || "-";
+        const color = card.querySelector('select:nth-of-type(2)').value || "-";
+
+        pedido.push({ nombre, cantidad, talle, color });
+        actualizarResumen();
+      }
+    });
+
+    document.getElementById('enviar-pedido').addEventListener('click', () => {
+      const nombreCliente = document.getElementById('nombre-cliente').value || "-";
+      const telefonoCliente = document.getElementById('telefono-cliente').value || "-";
+      const emailCliente = document.getElementById('email-cliente').value || "-";
+
+      const envioSeleccionado = document.querySelector('input[name="envio"]:checked')?.value || "-";
+
+      let mensaje = `Hola! Quisiera recibir la cotización de estos productos:%0A`;
+      pedido.forEach((item, i) => {
+        mensaje += `${i + 1}. ${item.nombre}, Cantidad: ${item.cantidad}, Talle: ${item.talle}, Color: ${item.color}%0A`;
+      });
+      mensaje += `%0ANombre: ${nombreCliente}%0ATeléfono: ${telefonoCliente}%0AEmail: ${emailCliente}%0AEnvío: ${envioSeleccionado}`;
+
+      window.open(`https://wa.me/5491169962751?text=${mensaje}`, "_blank");
+    });
+  </script>
+
+</body>
+
+</html>
