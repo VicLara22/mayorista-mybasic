@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MyBasic - Administración</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-gray-100 text-gray-950">
+    <!-- LOGIN -->
+
+    <div
+      id="login-container"
+      class="hidden min-h-screen items-center justify-center px-5"
+    >
+      <div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-sm">
+        <div class="text-center">
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
+            MyBasic
+          </p>
+
+          <h1 class="mt-2 text-2xl font-black">Administración</h1>
+
+          <p class="mt-2 text-sm text-gray-500">
+            Ingresá para acceder al panel.
+          </p>
+        </div>
+
+        <form id="login-form" class="mt-8">
+          <div>
+            <label for="login-usuario" class="text-sm font-bold">
+              Usuario
+            </label>
+
+            <input
+              id="login-usuario"
+              type="text"
+              autocomplete="username"
+              required
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+          </div>
+
+          <div class="mt-5">
+            <label for="login-contraseña" class="text-sm font-bold">
+              Contraseña
+            </label>
+
+            <input
+              id="login-contraseña"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+          </div>
+
+          <p
+            id="login-mensaje"
+            class="mt-4 hidden text-center text-sm font-semibold"
+          ></p>
+
+          <button
+            id="login-boton"
+            type="submit"
+            class="mt-6 w-full rounded-full bg-gray-950 px-5 py-3 font-bold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Iniciar sesión
+          </button>
+        </form>
+
+        <a
+          href="index.html"
+          class="mt-5 block text-center text-sm font-semibold text-gray-500 hover:text-gray-950"
+        >
+          Volver a la tienda
+        </a>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+
+    <div id="admin-container" class="hidden">
+      <!-- ========================= -->
+      <!-- HEADER -->
+      <!-- ========================= -->
+
+      <header class="border-b border-gray-200 bg-white">
+        <div
+          class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5"
+        >
+          <div>
+            <p
+              class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500"
+            >
+              MyBasic
+            </p>
+
+            <h1 class="mt-1 text-2xl font-black">Administración</h1>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a
+              href="index.html"
+              class="rounded-full border border-gray-300 px-5 py-2 text-sm font-bold hover:bg-gray-100"
+            >
+              Volver a la tienda
+            </a>
+
+            <button
+              id="cerrar-sesion"
+              type="button"
+              class="rounded-full bg-gray-950 px-5 py-2 text-sm font-bold text-white hover:bg-gray-800"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ========================= -->
+      <!-- CONTENIDO -->
+      <!-- ========================= -->
+
+      <main class="mx-auto max-w-7xl px-5 py-8">
+        <!-- TÍTULO -->
+
+        <div class="mb-6">
+          <h2 class="text-xl font-black">Pedidos</h2>
+
+          <p class="mt-1 text-sm text-gray-500">
+            Consultá los pedidos realizados desde la tienda.
+          </p>
+
+          <div class="mt-6 flex flex-col gap-3 md:flex-row">
+            <input
+              id="buscar-pedido"
+              type="text"
+              placeholder="Buscar por nombre, apellido o DNI..."
+              class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-gray-950"
+            />
+
+            <select
+              id="filtro-estado"
+              class="rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-gray-950"
+            >
+              <option value="todos">Todos los estados</option>
+              <option value="pendiente_transferencia">
+                Pendiente de transferencia
+              </option>
+              <option value="transferencia_recibida">
+                Transferencia recibida
+              </option>
+              <option value="preparando">Preparando</option>
+              <option value="listo">Listo / Enviado</option>
+              <option value="finalizado">Finalizado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+
+            <button
+              id="actualizar-pedidos"
+              type="button"
+              class="rounded-xl bg-gray-950 px-6 py-3 text-sm font-bold text-white hover:bg-gray-800"
+            >
+              Actualizar
+            </button>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- RESUMEN -->
+        <!-- ========================= -->
+
+        <div class="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <!-- TOTAL PEDIDOS -->
+
+          <div class="rounded-2xl bg-white p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Total de pedidos</p>
+
+            <p id="cantidad-pedidos" class="mt-2 text-3xl font-black">0</p>
+          </div>
+
+          <!-- PENDIENTES -->
+
+          <div class="rounded-2xl bg-white p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Pendientes de transferencia</p>
+
+            <p id="cantidad-pendientes" class="mt-2 text-3xl font-black">0</p>
+          </div>
+
+          <!-- PREPARANDO -->
+
+          <div class="rounded-2xl bg-white p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Preparando</p>
+
+            <p id="cantidad-preparando" class="mt-2 text-3xl font-black">0</p>
+          </div>
+
+          <!-- LISTOS -->
+
+          <div class="rounded-2xl bg-white p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Listos / enviados</p>
+
+            <p id="cantidad-listos" class="mt-2 text-3xl font-black">0</p>
+          </div>
+
+          <!-- TOTAL VENDIDO -->
+
+          <div class="rounded-2xl bg-white p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Total vendido</p>
+
+            <p id="total-vendido" class="mt-2 text-3xl font-black">$0</p>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- MENSAJE DE ERROR -->
+        <!-- ========================= -->
+
+        <div
+          id="mensaje-error"
+          class="mb-6 hidden rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-700"
+        >
+          No se pudieron cargar los pedidos.
+        </div>
+
+        <!-- ========================= -->
+        <!-- CARGANDO -->
+        <!-- ========================= -->
+
+        <div
+          id="cargando"
+          class="rounded-2xl bg-white p-10 text-center shadow-sm"
+        >
+          <p class="font-bold">Cargando pedidos...</p>
+
+          <p class="mt-2 text-sm text-gray-500">Esperá un momento.</p>
+        </div>
+
+        <!-- ========================= -->
+        <!-- TABLA -->
+        <!-- ========================= -->
+
+        <div
+          id="contenedor-pedidos"
+          class="hidden overflow-hidden rounded-2xl bg-white shadow-sm"
+        >
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[900px] text-left">
+              <thead class="border-b border-gray-200 bg-gray-50">
+                <tr>
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Pedido
+                  </th>
+
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Fecha
+                  </th>
+
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Cliente
+                  </th>
+
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Entrega
+                  </th>
+
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Total
+                  </th>
+
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Estado / Acción
+                  </th>
+
+                  <th
+                    class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                  >
+                    Acción
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody
+                id="lista-pedidos"
+                class="divide-y divide-gray-100"
+              ></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- SIN PEDIDOS -->
+        <!-- ========================= -->
+
+        <div
+          id="sin-pedidos"
+          class="hidden rounded-2xl bg-white p-10 text-center shadow-sm"
+        >
+          <p class="text-lg font-black">Todavía no hay pedidos.</p>
+
+          <p class="mt-2 text-sm text-gray-500">
+            Cuando un cliente realice una compra aparecerá acá.
+          </p>
+        </div>
+        <!-- ========================= -->
+        <!-- PRODUCTOS -->
+        <!-- ========================= -->
+
+        <section class="mt-10">
+          <div class="mb-6 flex items-center justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-black">Productos</h2>
+              <p class="mt-1 text-sm text-gray-500">
+                Productos disponibles en el catálogo.
+              </p>
+            </div>
+
+            <button
+              id="nuevo-producto"
+              type="button"
+              class="rounded-full bg-gray-950 px-5 py-3 text-sm font-bold text-white hover:bg-gray-800"
+            >
+              + Nuevo producto
+            </button>
+          </div>
+
+          <div class="overflow-hidden rounded-2xl bg-white shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[1000px] text-left">
+                <thead class="border-b border-gray-200 bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                    >
+                      Producto
+                    </th>
+
+                    <th
+                      class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                    >
+                      Categoría
+                    </th>
+
+                    <th
+                      class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                    >
+                      Precio
+                    </th>
+
+                    <th
+                      class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                    >
+                      Talles
+                    </th>
+
+                    <th
+                      class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                    >
+                      Colores
+                    </th>
+
+                    <th
+                      class="px-5 py-4 text-xs font-black uppercase tracking-wide"
+                    >
+                      Estado
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody
+                  id="lista-productos"
+                  class="divide-y divide-gray-100"
+                ></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div
+            id="sin-productos"
+            class="hidden rounded-2xl bg-white p-10 text-center shadow-sm"
+          >
+            <p class="text-lg font-black">No hay productos.</p>
+
+            <p class="mt-2 text-sm text-gray-500">
+              Todavía no hay productos disponibles para administrar.
+            </p>
+          </div>
+        </section>
+
+        <section class="mt-10 rounded-3xl bg-white p-6 shadow-sm">
+          <div class="mb-6">
+            <h2 class="text-xl font-black">Stock</h2>
+
+            <p class="mt-1 text-sm text-gray-500">
+              Cantidad disponible por producto, talle y color.
+            </p>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
+                <tr class="border-b border-gray-200 text-left">
+                  <th class="px-4 py-3 text-sm font-bold text-gray-600">
+                    Producto
+                  </th>
+
+                  <th class="px-4 py-3 text-sm font-bold text-gray-600">
+                    Talle
+                  </th>
+
+                  <th class="px-4 py-3 text-sm font-bold text-gray-600">
+                    Color
+                  </th>
+
+                  <th class="px-4 py-3 text-sm font-bold text-gray-600">
+                    Stock
+                  </th>
+
+                  <th class="px-4 py-3 text-sm font-bold text-gray-600">
+                    Acción
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody id="lista-stock">
+                <!-- El stock se carga desde la API -->
+              </tbody>
+            </table>
+          </div>
+
+          <p
+            id="sin-stock"
+            class="hidden py-8 text-center text-sm text-gray-500"
+          >
+            No hay registros de stock.
+          </p>
+        </section>
+      </main>
+
+      <!-- ========================= -->
+      <!-- MODAL DETALLE -->
+      <!-- ========================= -->
+
+      <div id="modal-pedido" class="fixed inset-0 z-50 hidden">
+        <!-- OVERLAY -->
+
+        <div id="modal-overlay" class="absolute inset-0 bg-black/50"></div>
+
+        <!-- PANEL -->
+
+        <aside
+          class="absolute right-0 top-0 flex h-full w-full max-w-xl flex-col bg-white shadow-2xl"
+        >
+          <!-- HEADER -->
+
+          <div
+            class="flex items-center justify-between border-b border-gray-200 px-6 py-5"
+          >
+            <div>
+              <p
+                class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500"
+              >
+                Detalle
+              </p>
+
+              <h2 id="modal-titulo" class="mt-1 text-2xl font-black">
+                Pedido #0
+              </h2>
+            </div>
+
+            <button
+              id="cerrar-modal"
+              type="button"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-xl hover:bg-gray-200"
+            >
+              ×
+            </button>
+          </div>
+
+          <!-- CONTENIDO -->
+
+          <div class="flex-1 overflow-y-auto p-6">
+            <!-- DATOS DEL CLIENTE -->
+
+            <section>
+              <h3 class="text-lg font-black">Cliente</h3>
+
+              <div class="mt-3 rounded-2xl bg-gray-50 p-5">
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <p class="text-xs font-bold uppercase text-gray-400">
+                      Nombre
+                    </p>
+
+                    <p id="detalle-nombre" class="mt-1 font-semibold">-</p>
+                  </div>
+
+                  <div>
+                    <p class="text-xs font-bold uppercase text-gray-400">DNI</p>
+
+                    <p id="detalle-dni" class="mt-1 font-semibold">-</p>
+                  </div>
+
+                  <div>
+                    <p class="text-xs font-bold uppercase text-gray-400">
+                      Teléfono
+                    </p>
+
+                    <p id="detalle-telefono" class="mt-1 font-semibold">-</p>
+                  </div>
+
+                  <div>
+                    <p class="text-xs font-bold uppercase text-gray-400">
+                      Medio de pago
+                    </p>
+
+                    <p id="detalle-pago" class="mt-1 font-semibold">-</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ENTREGA -->
+
+            <section class="mt-8">
+              <h3 class="text-lg font-black">Entrega</h3>
+
+              <div class="mt-3 rounded-2xl bg-gray-50 p-5">
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <p class="text-xs font-bold uppercase text-gray-400">
+                      Tipo
+                    </p>
+
+                    <p id="detalle-entrega" class="mt-1 font-semibold">-</p>
+                  </div>
+
+                  <div>
+                    <p class="text-xs font-bold uppercase text-gray-400">
+                      Código postal
+                    </p>
+
+                    <p id="detalle-codigo-postal" class="mt-1 font-semibold">
+                      -
+                    </p>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <p class="text-xs font-bold uppercase text-gray-400">
+                    Dirección
+                  </p>
+
+                  <p id="detalle-direccion" class="mt-1 font-semibold">-</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="mt-8">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-black">Productos</h3>
+
+                <span
+                  id="detalle-cantidad-productos"
+                  class="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold"
+                >
+                  0 unidades
+                </span>
+              </div>
+
+              <div id="detalle-productos" class="mt-3 space-y-3"></div>
+            </section>
+
+            <!-- TOTAL -->
+
+            <!-- RESUMEN DE PAGO -->
+
+            <section class="mt-8">
+              <h3 class="text-lg font-black">Resumen de pago</h3>
+
+              <div class="mt-3 rounded-2xl bg-gray-50 p-5">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold">Total del pedido</span>
+
+                  <span id="detalle-total" class="font-black"> $0 </span>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between">
+                  <span class="text-sm text-gray-600">
+                    Transferencia / seña
+                  </span>
+
+                  <span id="detalle-monto-transferencia" class="font-bold">
+                    $0
+                  </span>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between">
+                  <span class="text-sm text-gray-600"> Saldo en efectivo </span>
+
+                  <span id="detalle-saldo-efectivo" class="font-bold">
+                    $0
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ESTADO -->
+
+            <section class="mt-8">
+              <h3 class="text-lg font-black">Estado del pedido</h3>
+
+              <div class="mt-3 rounded-2xl border border-gray-200 p-5">
+                <label for="detalle-estado-select" class="text-sm font-bold">
+                  Estado
+                </label>
+
+                <select
+                  id="detalle-estado-select"
+                  class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-gray-950"
+                >
+                  <option value="pendiente_transferencia">
+                    Pendiente de transferencia
+                  </option>
+
+                  <option value="transferencia_recibida">
+                    Transferencia recibida
+                  </option>
+
+                  <option value="preparando">Preparando</option>
+
+                  <option value="listo">Listo / Enviado</option>
+
+                  <option value="finalizado">Finalizado</option>
+
+                  <option value="cancelado">Cancelado</option>
+                </select>
+
+                <button
+                  id="guardar-estado"
+                  type="button"
+                  class="mt-4 w-full rounded-full bg-gray-950 px-5 py-3 font-bold text-white hover:bg-gray-800"
+                >
+                  Guardar estado
+                </button>
+
+                <button
+                  id="confirmar-transferencia"
+                  type="button"
+                  class="mt-3 hidden w-full rounded-full bg-green-600 px-5 py-3 font-bold text-white hover:bg-green-700"
+                >
+                  ✓ Confirmar transferencia
+                </button>
+
+                <p
+                  id="mensaje-estado"
+                  class="mt-3 hidden text-center text-sm font-semibold"
+                ></p>
+              </div>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- MODAL EDITAR PRODUCTO -->
+    <!-- ========================= -->
+
+    <div id="modal-producto" class="fixed inset-0 z-50 hidden">
+      <div
+        id="modal-producto-overlay"
+        class="absolute inset-0 bg-black/50"
+      ></div>
+
+      <aside
+        class="absolute right-0 top-0 flex h-full w-full max-w-xl flex-col bg-white shadow-2xl"
+      >
+        <div
+          class="flex items-center justify-between border-b border-gray-200 px-6 py-5"
+        >
+          <div>
+            <p
+              class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500"
+            >
+              Administración
+            </p>
+
+            <h2 class="mt-1 text-2xl font-black">Editar producto</h2>
+          </div>
+
+          <button
+            id="cerrar-modal-producto"
+            type="button"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-xl hover:bg-gray-200"
+          >
+            ×
+          </button>
+        </div>
+
+        <form id="formulario-producto" class="flex-1 overflow-y-auto p-6">
+          <input id="producto-id" type="hidden" />
+
+          <div>
+            <label for="producto-nombre" class="text-sm font-bold">
+              Nombre
+            </label>
+
+            <input
+              id="producto-nombre"
+              type="text"
+              required
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-categoria" class="text-sm font-bold">
+              Categoría
+            </label>
+
+            <input
+              id="producto-categoria"
+              type="text"
+              required
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-precio" class="text-sm font-bold">
+              Precio
+            </label>
+
+            <input
+              id="producto-precio"
+              type="number"
+              min="0.01"
+              step="0.01"
+              required
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-talles" class="text-sm font-bold">
+              Talles
+            </label>
+
+            <input
+              id="producto-talles"
+              type="text"
+              required
+              placeholder="S, M, L, XL"
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+
+            <p class="mt-1 text-xs text-gray-500">
+              Separá los talles con comas.
+            </p>
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-colores" class="text-sm font-bold">
+              Colores
+            </label>
+
+            <textarea
+              id="producto-colores"
+              rows="4"
+              required
+              placeholder="Negro, Blanco, Rojo..."
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            ></textarea>
+
+            <p class="mt-1 text-xs text-gray-500">
+              Separá los colores con comas.
+            </p>
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-descripcion" class="text-sm font-bold">
+              Descripción
+            </label>
+
+            <textarea
+              id="producto-descripcion"
+              rows="3"
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            ></textarea>
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-lavado" class="text-sm font-bold">
+              Lavado
+            </label>
+
+            <textarea
+              id="producto-lavado"
+              rows="2"
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            ></textarea>
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-uso" class="text-sm font-bold"> Uso </label>
+
+            <input
+              id="producto-uso"
+              type="text"
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none focus:border-gray-950"
+            />
+          </div>
+
+          <div class="mt-5">
+            <label for="producto-img" class="text-sm font-bold"> Imagen </label>
+
+            <input
+              id="producto-img"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              class="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-gray-950"
+            />
+
+            <p class="mt-1 text-xs text-gray-500">
+              Formatos permitidos: JPG, PNG o WEBP.
+            </p>
+
+            <p
+              id="producto-img-actual"
+              class="mt-2 hidden text-xs text-gray-500"
+            ></p>
+          </div>
+
+          <p
+            id="mensaje-producto"
+            class="mt-5 hidden rounded-xl p-4 text-center text-sm font-semibold"
+          ></p>
+
+          <button
+            id="guardar-producto"
+            type="submit"
+            class="mt-5 w-full rounded-full bg-gray-950 px-5 py-3 font-bold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Guardar cambios
+          </button>
+        </form>
+      </aside>
+    </div>
+    <script src="admin/auth.js"></script>
+    <script src="admin/admin.js"></script>
+  </body>
+</html>
