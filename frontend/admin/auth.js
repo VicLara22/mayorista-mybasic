@@ -1,4 +1,4 @@
-const AUTH_URL = "http://127.0.0.1:3001/api/auth";
+const AUTH_URL = "https://mayorista-mybasic.onrender.com/api/auth";
 
 function obtenerToken() {
   return sessionStorage.getItem("adminToken");

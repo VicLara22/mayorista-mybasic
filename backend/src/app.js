@@ -9,7 +9,11 @@ const authRoutes = require("./auth/auth.routes");
 
 const app = express();
 
-const origenesPermitidos = ["http://127.0.0.1:5500", "http://localhost:5500"];
+const origenesPermitidos = [
+  "http://127.0.0.1:5500",
+  "http://localhost:5500",
+  "https://mybasic.netlify.app",
+];
 
 app.use(
   cors({

@@ -1,6 +1,6 @@
-const API_URL = "http://localhost:3001/api/pedidos";
-const PRODUCTOS_API_URL = "http://localhost:3001/api/productos/admin";
-const STOCK_API_URL = "http://localhost:3001/api/stock";
+const API_URL = "https://mayorista-mybasic.onrender.com/api/pedidos";
+const PRODUCTOS_API_URL = "https://mayorista-mybasic.onrender.com/api/productos/admin";
+const STOCK_API_URL = "https://mayorista-mybasic.onrender.com/api/stock";
 
 let pedidoActualId = null;
 let pedidos = [];
@@ -366,7 +366,7 @@ function renderizarProductos(productos) {
             producto.img
               ? `
                 <img
-                  src="http://localhost:3001/${escapeHtml(producto.img)}"
+                  src="https://mayorista-mybasic.onrender.com/${escapeHtml(producto.img)}"
                   alt="${escapeHtml(producto.nombre)}"
                   class="h-12 w-12 rounded-lg object-cover"
                 >

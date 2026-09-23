@@ -4,7 +4,7 @@ const productosDiv = document.getElementById("productos");
 const pedido = [];
 let productoSeleccionado = null;
 
-const STOCK_API_URL = "http://localhost:3001/api/stock/publico";
+const STOCK_API_URL = "https://mayorista-mybasic.onrender.com/api/stock/publico";
 let stockData = [];
 
 const money = (value) => new Intl.NumberFormat("es-AR").format(value);
@@ -50,7 +50,7 @@ function obtenerStockDisponible(productoId, talle, color) {
 
 async function cargarProductos() {
   try {
-    const respuesta = await fetch("http://localhost:3001/api/productos");
+    const respuesta = await fetch("https://mayorista-mybasic.onrender.com/api/productos");
 
     if (!respuesta.ok) {
       throw new Error("No se pudieron obtener los productos.");
@@ -690,7 +690,7 @@ async function realizarPedido() {
   boton.textContent = "Enviando pedido...";
 
   try {
-    const respuesta = await fetch("http://localhost:3001/api/pedidos", {
+    const respuesta = await fetch("https://mayorista-mybasic.onrender.com/api/pedidos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
